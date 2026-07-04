@@ -1,0 +1,13 @@
+name,province,urban_class,latitude,longitude,flood_area_pct,damaged_buildings,displaced_people,need_posts,response_posts,response_teams,note
+Conselice,Ravenna,rural_agricultural,44.5114,11.829,80,160,6000,125,15,3,Persistent waterlogging in low-lying Fruit Valley basin; strong under-response signal.
+Faenza,Ravenna,secondary_city,44.2899,11.8833,35,240,12000,80,60,18,"High impact, strong visible rescue and volunteer response."
+Lugo,Ravenna,secondary_town,44.4214,11.9116,40,150,7500,50,30,8,"Initially isolated, later received aid."
+Cesena,Forli-Cesena,secondary_city,44.1391,12.2431,25,180,9000,40,50,15,Visible water rescue activity.
+Forli,Forli-Cesena,secondary_city,44.2227,12.0407,20,160,8000,30,45,13,Suburbs flooded; response presence was frequently observed.
+Ravenna,Ravenna,city,44.4184,12.2035,18,140,27000,20,40,16,Major coordination and evacuation focus.
+Bologna,Bologna,regional_capital,44.4949,11.3426,5,30,800,10,25,5,Low direct impact; regional mobilization and support hub.
+Rimini,Rimini,coastal_city,44.0678,12.5695,10,50,1500,15,20,5,Moderate coastal and canal flooding.
+Cotignola,Ravenna,small_town,44.3859,11.9385,45,80,2200,25,8,2,"Small-town distress signals, lower response visibility."
+Solarolo,Ravenna,small_town,44.358,11.8453,50,65,1800,18,7,1,Local under-response signal in rural fringe.
+Modigliana,Forli-Cesena,mountain_village,44.159,11.793,30,50,1200,20,5,1,Landslide isolation and lower formal-response visibility.
+Tredozio,Forli-Cesena,mountain_village,44.076,11.744,25,25,600,15,2,1,Peripheral village; social signals suggest isolation.

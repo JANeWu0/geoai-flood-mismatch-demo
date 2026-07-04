@@ -1,0 +1,9 @@
+post_id,created_at,text,locality,label
+p001,2023-05-18T09:12:00Z,Conselice is still surrounded by water. No clean water and no electricity.,Conselice,need
+p002,2023-05-18T10:31:00Z,Rescue boats are active in Faenza. Thank you firefighters.,Faenza,response
+p003,2023-05-19T15:20:00Z,Lugo isolated; roads blocked and families waiting for supplies.,Lugo,need
+p004,2023-05-20T08:55:00Z,Civil protection team delivering food in Cesena.,Cesena,response
+p005,2023-05-21T18:02:00Z,Solarolo needs pumps urgently. Water is not going down.,Solarolo,need
+p006,2023-05-22T12:40:00Z,Volunteers reached Forli suburbs with mud cleanup equipment.,Forli,response
+p007,2023-05-23T20:18:00Z,Modigliana remains difficult to reach because of landslides.,Modigliana,need
+p008,2023-05-24T11:10:00Z,New high-capacity pumps finally arrived near Conselice.,Conselice,response
