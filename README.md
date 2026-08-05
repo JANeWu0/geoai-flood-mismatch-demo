@@ -10,6 +10,7 @@ A Multimodal Vision–Language Framework for Dynamic Impact–Response Coordinat
 **Author:** Wu Huijuan  
 **Programme:** Transforming City Regions, RWTH Aachen University  
 **Case:** May 2023 Emilia-Romagna flood
+**Live Demo:**[Open the interactive Streamlit app](https://geoai-flood-mismatch-demo-mt2cs2m7ruoewdch4koyc3.streamlit.app/)
 
 ## 1. Research problem
 
