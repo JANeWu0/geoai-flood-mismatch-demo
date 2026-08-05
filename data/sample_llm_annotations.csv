@@ -1,0 +1,9 @@
+post_id,timestamp,language,category,response_type,place_mention,geocoding_cue,confidence,rationale
+P001,2023-05-18,it,Health risk,demand,Conselice,Conselice,0.95,Stagnant water and contamination concern
+P002,2023-05-19,it,Infrastructure disruption,demand,Lugo,Lugo,0.88,Road access remains disrupted
+P003,2023-05-19,it,Evacuation and entrapment,response,Faenza,Faenza,0.92,Boat rescue activity reported
+P004,2023-05-20,it,Resource request,demand,Conselice,Conselice,0.94,Request for pumps and clean water
+P005,2023-05-21,it,Information,information,Ravenna,Ravenna,0.89,Regional warning and road information
+P006,2023-05-21,it,Infrastructure disruption,demand,Sant'Agata sul Santerno,Sant'Agata sul Santerno,0.91,Access constraints reported
+P007,2023-05-22,it,Resource request,response,Cesena,Cesena,0.9,Food distribution reported
+P008,2023-05-22,it,Information,information,Bologna,Bologna,0.87,Regional coordination message

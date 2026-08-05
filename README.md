@@ -1,203 +1,149 @@
-# GeoAI Flood Response–Impact Mismatch Demo
+# Operationalizing Mismatch Diagnosis in Urban Flood Governance
 
-> A GitHub-ready GeoAI demo derived from the thesis **“Diagnosing Urban Flood Response-Impact Mismatch from an Architectural Perspective: A CV-LLM Coupled Analysis Based on the 2023 Emilia-Romagna Flood in Italy.”**
+## Thesis-aligned Python portfolio
 
-中文标题：**CV-LLM 多模态框架下的城市洪灾响应失配诊断 Demo**
+This repository operationalises the analytical logic of the master thesis:
 
-This repository converts the thesis idea into a lightweight, reproducible geospatial AI demo: use **computer vision-derived flood impact signals**, **LLM/social response signals**, and a **Spatial Mismatch Index (SMI)** to identify where disaster response is lower than observed flood impact.
+**Operationalizing Mismatch Diagnosis in Urban Flood Governance:  
+A Multimodal Vision–Language Framework for Dynamic Impact–Response Coordination**
 
-The sample dataset is synthetic but calibrated to the thesis narrative. Replace it with your real CV/LLM outputs when publishing the full research version.
+**Author:** Wu Huijuan  
+**Programme:** Transforming City Regions, RWTH Aachen University  
+**Case:** May 2023 Emilia-Romagna flood
 
----
+## 1. Research problem
 
-## What the demo shows
+The project asks whether the spatial distribution of realised flood impacts is aligned with the spatial distribution of response- and demand-related visibility.
 
-| Thesis component | GitHub demo implementation |
-|---|---|
-| Remote sensing + CV flood impact assessment | `src/flood_mismatch/remote_sensing.py` + sample impact columns |
-| LLM extraction from social/report text | `src/flood_mismatch/nlp_response.py` + `data/sample_social_posts.csv` |
-| Spatial Mismatch Index | `src/flood_mismatch/smi.py` |
-| Case interpretation | Streamlit app map + residual ranking |
-| Planning proposal | `docs/method_card.md` |
+The key distinction is:
 
-Core question:
+- **Impact `I_i`**: physically reconstructed flood consequences;
+- **Visibility `R_i`**: digitally mediated response and demand signals;
+- `R_i` is **not** a direct measurement of operational deployment.
 
-> Are emergency response resources spatially aligned with where flood impact is highest?
+## 2. Analytical framework
 
----
+The workflow follows four stages:
 
-## Demo preview
+1. reconstruct physical impact on a common 1 km grid;
+2. extract, geocode and aggregate response/demand signals;
+3. quantify distributional mismatch with the Spatial Mismatch Index;
+4. interpret direction and magnitude through the standardised residual surface.
 
-The Streamlit app displays:
+## 3. Material and source structure
 
-1. **SMI score** for the full case sample.
-2. **Interactive mismatch map** of affected municipalities.
-3. **Impact share vs. response share chart**.
-4. **Under-response ranking** for planning diagnosis.
+### Physical-impact inputs
 
-Expected sample result:
+- Copernicus EMS Rapid Mapping inundation footprint;
+- OpenStreetMap building footprints;
+- OpenStreetMap road and rail networks;
+- supporting Sentinel, orthophoto, LiDAR, DEM and administrative layers.
+
+### Visibility inputs
+
+- geolocated X posts;
+- LLM-assisted semantic annotations;
+- official civil-protection texts as contextual references, not deployment counts.
+
+The thesis reports:
+
+- 481 records with usable location assignments;
+- 450 unique X post IDs;
+- 106 event-window records;
+- 100 unique analytical posts after deduplication.
+
+## 4. Physical impact intensity
+
+For each grid cell:
 
 ```text
-SMI ≈ 0.289
-Most under-served demo localities: Conselice, Solarolo, Cotignola, Modigliana
+I_i =
+w1 * inundation_ratio_i
++ w2 * inundated_building_ratio_i
++ w3 * road_disruption_ratio_i
 ```
 
----
+The demo uses equal weights as a transparent baseline. The thesis states that outputs must be interpreted conditionally on the weighting choice because formal calibration and sensitivity testing were not available.
 
-## Quick start
+## 5. Response and demand visibility
+
+The LLM annotation schema records:
+
+- location;
+- need category;
+- response type;
+- confidence;
+- short rationale.
+
+The thesis categories are represented in `prompts/llm_annotation_prompt.md`. Post counts are aggregated to the same grid and can also be expressed per 10,000 residents.
+
+## 6. Mismatch diagnostics
+
+### Distributional SMI
+
+```text
+I_share_i = I_i / sum(I)
+R_share_i = R_i / sum(R)
+Delta_i = R_share_i - I_share_i
+SMI_i = 0.5 * abs(Delta_i)
+SMI = sum(SMI_i)
+```
+
+Negative `Delta_i` means under-visibility relative to impact.
+
+### Directional standardised residual
+
+```text
+SR_i = z(log(1 + I_i)) - z(log(1 + R_i))
+```
+
+- positive `SR_i`: under-visibility relative to impact;
+- negative `SR_i`: over-visibility relative to impact;
+- `|SR_i|`, normalised to `[0, 1]`: mismatch magnitude.
+
+SMI and SR answer different questions and must not be treated as the same metric.
+
+## 7. Case-study interpretation
+
+The diagnostic workflow examines:
+
+- urban concentration of digitally visible signals;
+- rural and low-lying agricultural cells with high impact and weak visibility;
+- accessibility constraints and road-network disruption;
+- post-flood intervention layers as qualitative triangulation.
+
+A high mismatch magnitude is a screening signal requiring further investigation. It is not, by itself, proof of response failure.
+
+## 8. Strategic proposal logic
+
+The code maps diagnosed conditions to the four proposal groups in the thesis:
+
+1. spatial planning and infrastructure;
+2. watershed management and nature-based solutions;
+3. emergency management and institutional reform;
+4. community engagement and technology integration.
+
+## 9. Run the project
 
 ```bash
-git clone <your-repo-url>
-cd geoai-flood-mismatch-demo
 python -m venv .venv
-source .venv/bin/activate  # Windows: .venv\Scripts\activate
+source .venv/bin/activate
 pip install -r requirements.txt
+python scripts/run_pipeline.py
+pytest -q
 streamlit run app.py
 ```
 
-Run the pipeline without the UI:
-
-```bash
-python scripts/run_pipeline.py
-```
-
-This writes:
+Open the notebook:
 
 ```text
-outputs/sample_mismatch_result.csv
+notebooks/Thesis_Aligned_Mismatch_Diagnosis.ipynb
 ```
 
----
+## 10. Evidence boundary
 
-## Data schema
+The executable grid and post-level examples are synthetic. They demonstrate the thesis method without claiming to reproduce the original empirical maps. See:
 
-`data/sample_municipalities.csv` is the main demo table.
-
-| Column | Meaning |
-|---|---|
-| `name`, `province`, `latitude`, `longitude` | Spatial unit metadata |
-| `flood_area_pct` | CV-derived or estimated flooded area percentage |
-| `damaged_buildings` | CV-derived or reported building damage count |
-| `displaced_people` | affected/displaced population proxy |
-| `need_posts` | LLM-extracted distress / unmet need signal count |
-| `response_posts` | LLM-extracted visible response signal count |
-| `response_teams` | official or reported response deployment proxy |
-
-The demo computes:
-
-```text
-impact_score   = weighted normalized flood impact indicators
-response_score = weighted normalized response indicators
-SMI            = 0.5 * sum(|response_share - impact_share|)
-residual       = response_share - impact_share
-```
-
-Negative residuals indicate **under-response relative to impact**.
-
----
-
-## Repository structure
-
-```text
-geoai-flood-mismatch-demo/
-├── app.py                         # Streamlit map dashboard
-├── data/
-│   ├── sample_municipalities.csv
-│   ├── sample_municipalities.geojson
-│   └── sample_social_posts.csv
-├── docs/
-│   ├── data_card.md
-│   ├── method_card.md
-│   └── thesis_to_demo_mapping.md
-├── prompts/
-│   └── extract_response_signal.md
-├── scripts/
-│   └── run_pipeline.py
-├── src/flood_mismatch/
-│   ├── data_loader.py
-│   ├── nlp_response.py
-│   ├── remote_sensing.py
-│   └── smi.py
-├── tests/
-│   └── test_smi.py
-└── assets/
-    └── architecture.svg
-```
-
----
-
-## How to replace the sample data with real research data
-
-### 1. CV flood impact output
-
-Export one row per spatial unit:
-
-```csv
-name,latitude,longitude,flood_area_pct,damaged_buildings,displaced_people
-Conselice,44.5114,11.8290,80,160,6000
-```
-
-For a production workflow, `flood_area_pct` can come from:
-
-- Sentinel-1 SAR change detection
-- Sentinel-2 NDWI water mask
-- U-Net / segmentation model output
-- Copernicus EMS validation layers
-
-### 2. LLM/social response output
-
-Export extracted response signals:
-
-```csv
-locality,need_posts,response_posts,response_teams
-Conselice,125,15,3
-```
-
-The prompt template in `prompts/extract_response_signal.md` gives a repeatable extraction format.
-
-### 3. Recompute SMI
-
-```bash
-python scripts/run_pipeline.py
-```
-
----
-
-## Citation / thesis link
-
-When publishing this repo, cite the thesis and make clear that the included CSV is a synthetic demo dataset unless replaced with verified field, official, satellite, or social-media data.
-
-Suggested short citation:
-
-```bibtex
-@mastersthesis{flood_mismatch_geoai_demo,
-  title  = {Diagnosing Urban Flood Response-Impact Mismatch from an Architectural Perspective: A CV-LLM Coupled Analysis Based on the 2023 Emilia-Romagna Flood in Italy},
-  author = {Your Name},
-  year   = {2026},
-  note   = {GitHub demo repository}
-}
-```
-
----
-
-## 中文说明
-
-这个仓库把你的毕业设计从“论文叙事”转换成“可运行 demo”：
-
-- 用遥感/CV 结果表示洪灾物理影响；
-- 用 LLM 对社交媒体、报告、新闻等文本抽取“需求/响应”信号；
-- 用 SMI 指数量化每个地区“灾情占比”和“救援占比”的差异；
-- 在地图上突出响应不足区域，为城市韧性规划、应急资源配置和海绵城市策略提供诊断依据。
-
-适合作为：
-
-- GitHub portfolio 项目；
-- 毕业设计技术展示；
-- GeoAI / Urban AI / Climate Resilience 方向作品集；
-- 后续论文代码仓库初稿。
-
----
-
-## License
-
-MIT License. Replace the placeholder author name before publishing.
+- `docs/SOURCE_AND_PROVENANCE.md`
+- `docs/THESIS_LOGIC_MAP.md`
+- `docs/REAL_DATA_REPLACEMENT.md`

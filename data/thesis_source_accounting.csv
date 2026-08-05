@@ -1,0 +1,6 @@
+stage,records,definition
+Full scraped archive,,Raw keyword-based pool before location assignment
+Usable location assignments,481,Records with metadata coordinates or place-name geocoding
+Unique X post IDs among located records,450,Some IDs occur more than once
+Records in May 2023 event window,106,Event-window records before deduplication
+Unique analytical X post IDs,100,Deduplicated observations used for spatial aggregation

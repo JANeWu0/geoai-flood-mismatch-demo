@@ -1,0 +1,13 @@
+grid_id,municipality,latitude,longitude,population,inundation_ratio,inundated_building_ratio,road_disruption_ratio,response_signal_count,direct_need_count,response_related_count,information_count
+G001,Conselice,44.516,11.826,310,0.92,0.48,0.82,1,0,1,0
+G002,Conselice,44.507,11.838,270,0.84,0.39,0.76,0,0,0,0
+G003,Lugo,44.423,11.907,820,0.71,0.55,0.68,3,1,1,1
+G004,Lugo,44.414,11.918,690,0.63,0.42,0.61,2,1,0,1
+G005,Faenza,44.288,11.88,1450,0.58,0.72,0.49,13,4,4,5
+G006,Faenza,44.278,11.892,1230,0.51,0.66,0.44,10,3,3,4
+G007,Ravenna,44.42,12.2,1750,0.28,0.31,0.22,20,5,4,11
+G008,Ravenna,44.41,12.215,1600,0.35,0.37,0.29,16,4,3,9
+G009,Forli,44.224,12.041,1320,0.46,0.61,0.55,7,2,2,3
+G010,Cesena,44.139,12.243,1390,0.43,0.57,0.47,8,3,2,3
+G011,Sant'Agata sul Santerno,44.441,11.861,220,0.79,0.34,0.73,1,0,1,0
+G012,Bologna,44.495,11.343,1900,0.08,0.11,0.07,14,2,2,10
