@@ -1,31 +1,58 @@
 # Validation
 
-## Notebook
+## Scope
 
-`notebooks/Thesis_Aligned_Mismatch_Diagnosis.ipynb` executed successfully from the first cell to the final cell.
+Validation in this repository covers the executable diagnostic prototype:
+
+- input schema and value ranges;
+- the exact share-based SMI formula;
+- the exact log-z standardised residual formula;
+- min-max rescaling of `|SR|` to `[0, 1]`;
+- sign-based directional interpretation without an empirical `±0.25` cut-off;
+- the thesis-core LLM annotation fields;
+- explicit separation between visibility and operational deployment.
+
+It does **not** independently validate the original empirical thesis maps or
+reconstruct the complete original CV, GIS, API and geocoding pipeline.
 
 ## Pipeline
 
-Exit code: `0`
+Run:
+
+```bash
+python scripts/run_pipeline.py
+```
+
+The script reports a value in the following form:
 
 ```text
-Share-based SMI: 0.472
-Spatial units: 12
-
-Highest under-visibility cells (positive SR):
-grid_id            municipality  standardised_residual  mismatch_magnitude diagnostic_direction
-   G002               Conselice               2.717280            0.797003     under_visibility
-   G001               Conselice               2.346550            0.688265     under_visibility
-   G011 Sant'Agata sul Santerno               1.791007            0.525319     under_visibility
-   G003                    Lugo               1.196887            0.351058     under_visibility
-   G004                    Lugo               1.042520            0.305781     under_visibility
+Synthetic demonstration SMI computed from 12 sample spatial units: <calculated value>
+This executed value is not presented as the original empirical thesis SMI.
 ```
+
+The numerical value depends on the current contents of
+`data/sample_grid_units.csv`; it is not a fixed case-study constant.
 
 ## Tests
 
-Exit code: `0`
+Run:
+
+```bash
+pytest -q
+```
+
+Expected result for this revision:
 
 ```text
-[32m.[0m[32m.[0m[32m.[0m[32m                                                                      [100%][0m
-[32m[32m[1m3 passed[0m[32m in 0.11s[0m[0m
+7 passed
 ```
+
+The tests independently reconstruct the SMI and SR formulas from the input
+columns instead of only checking broad ranges. They also verify the magnitude
+normalisation, sign convention, annotation schema and homepage evidence label.
+
+## Notebook
+
+`notebooks/Thesis_Aligned_Mismatch_Diagnosis.ipynb` is a synthetic walkthrough.
+Any output number shown there must be labelled as an executed demonstration
+result rather than as the empirical thesis-wide SMI.
