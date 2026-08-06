@@ -1,9 +1,9 @@
-post_id,timestamp,language,category,response_type,place_mention,geocoding_cue,confidence,rationale
-P001,2023-05-18,it,Health risk,demand,Conselice,Conselice,0.95,Stagnant water and contamination concern
-P002,2023-05-19,it,Infrastructure disruption,demand,Lugo,Lugo,0.88,Road access remains disrupted
-P003,2023-05-19,it,Evacuation and entrapment,response,Faenza,Faenza,0.92,Boat rescue activity reported
-P004,2023-05-20,it,Resource request,demand,Conselice,Conselice,0.94,Request for pumps and clean water
-P005,2023-05-21,it,Information,information,Ravenna,Ravenna,0.89,Regional warning and road information
-P006,2023-05-21,it,Infrastructure disruption,demand,Sant'Agata sul Santerno,Sant'Agata sul Santerno,0.91,Access constraints reported
-P007,2023-05-22,it,Resource request,response,Cesena,Cesena,0.9,Food distribution reported
-P008,2023-05-22,it,Information,information,Bologna,Bologna,0.87,Regional coordination message
+post_id,timestamp,language,location,needs_category,severity_score,sentiment,summary,response_type,geocoding_cue,confidence,rationale
+P001,2023-05-18,it,Conselice,Health risk,8,anxiety,Stagnant water and contamination concerns were reported.,demand,Conselice,0.95,Explicit place name and health-risk content
+P002,2023-05-19,it,Lugo,Infrastructure failure,7,anxiety,Road access remained disrupted in Lugo.,demand,Lugo,0.88,Explicit place name and access-disruption statement
+P003,2023-05-19,it,Faenza,Evacuation,6,gratitude,Boat rescue activity was reported in Faenza.,response,Faenza,0.92,Explicit place name and rescue activity
+P004,2023-05-20,it,Conselice,Resource request,9,desperation,Pumps and clean water were requested in Conselice.,demand,Conselice,0.94,Explicit place name and resource request
+P005,2023-05-21,it,Ravenna,Information,4,neutral,A regional warning and road information were reported for Ravenna.,information,Ravenna,0.89,Explicit place name and informational content
+P006,2023-05-21,it,Sant'Agata sul Santerno,Infrastructure failure,7,anxiety,Access constraints were reported in Sant'Agata sul Santerno.,demand,Sant'Agata sul Santerno,0.91,Explicit place name and access-disruption statement
+P007,2023-05-22,it,Cesena,Resource request,5,gratitude,Food distribution was reported in Cesena.,response,Cesena,0.90,Explicit place name and response-related resource distribution
+P008,2023-05-22,it,Bologna,Information,3,neutral,A regional coordination message referred to Bologna.,information,Bologna,0.87,Explicit place name and coordination information
