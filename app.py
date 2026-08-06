@@ -171,7 +171,7 @@ button[data-baseweb="tab"][aria-selected="true"] {
 def load_results():
     return run_pipeline(
         ROOT / "data" / "sample_grid_units.csv",
-        ROOT / "outputs" / "thesis_aligned_mismatch_result.csv",
+        ROOT / "outputs" / "synthetic_demo_mismatch_result.csv",
     )
 
 
@@ -285,9 +285,9 @@ def download_result_button() -> None:
     csv_bytes = result.to_csv(index=False).encode("utf-8")
 
     st.download_button(
-        label="Download processed grid results",
+        label="Download synthetic demonstration results",
         data=csv_bytes,
-        file_name="thesis_aligned_mismatch_result.csv",
+        file_name="synthetic_demo_mismatch_result.csv",
         mime="text/csv",
     )
 
@@ -520,7 +520,7 @@ def integrated_workflow_svg() -> str:
           stroke-width="2"/>
 
     <text x="553" y="677" class="equation" text-anchor="middle">
-        Rᵢ = z[log(1 + cᵢ)]
+        Rᵢ = cᵢ
     </text>
 
     <!-- Visibility output -->
@@ -538,9 +538,9 @@ def integrated_workflow_svg() -> str:
 
     <text x="860" y="520" class="title" text-anchor="middle">Visibility surface</text>
     <text x="860" y="565" class="equation" text-anchor="middle">Rᵢ</text>
-    <text x="860" y="600" class="small" text-anchor="middle">Semantically filtered</text>
-    <text x="860" y="622" class="small" text-anchor="middle">digitally mediated</text>
-    <text x="860" y="644" class="small" text-anchor="middle">signals</text>
+    <text x="860" y="600" class="small" text-anchor="middle">Raw non-negative</text>
+    <text x="860" y="622" class="small" text-anchor="middle">visibility intensity</text>
+    <text x="860" y="644" class="small" text-anchor="middle">not deployment</text>
 
     <!-- Outputs converge on common grid -->
     <path d="M955 198
@@ -613,11 +613,11 @@ def integrated_workflow_svg() -> str:
     </text>
 
     <text x="1380" y="390" class="equation" text-anchor="middle">
-        SRᵢ = z(Iᵢ) − z(Rᵢ)
+        SRᵢ = Iᵢᶻ − Rᵢᶻ
     </text>
 
     <text x="1380" y="450" class="equation" text-anchor="middle">
-        Mᵢ = |SRᵢ|
+        Mᵢ = min–max(|SRᵢ|)
     </text>
 
     <line x1="1300" y1="488"
@@ -793,7 +793,7 @@ def response_workflow_svg() -> str:
     <text x="805" y="151" class="l">NER + place-name validation</text>
     <text x="805" y="186" class="l">Geocoding + grid assignment</text>
     <text x="805" y="221" class="l">Semantic count cᵢ</text>
-    <text x="805" y="256" class="e">Rᵢ = z[log(1 + cᵢ)]</text>
+    <text x="805" y="256" class="e">Rᵢ = cᵢ</text>
 
     <path d="M1080 178 L1145 178"
           stroke="#475569"
@@ -879,7 +879,7 @@ def mismatch_workflow_svg() -> str:
     <rect x="865" y="240" width="250" height="135" rx="18"
           class="n" stroke="#c97d92"/>
     <text x="900" y="281" class="t">Directional surface</text>
-    <text x="900" y="328" class="e">SRᵢ = z(Iᵢ) − z(Rᵢ)</text>
+    <text x="900" y="328" class="e">SRᵢ = Iᵢᶻ − Rᵢᶻ</text>
 
     <path d="M1115 122 C1172 122 1180 170 1237 170"
           stroke="#475569"
@@ -1006,13 +1006,13 @@ def planning_workflow_svg() -> str:
 
 st.markdown(
     """
-<div class="hero-kicker">Master thesis companion demo</div>
-<div class="hero-title">GeoAI Flood Response–Impact Mismatch Diagnosis</div>
+<div class="hero-kicker">Master thesis companion prototype</div>
+<div class="hero-title">Flood Impact–Visibility Mismatch Diagnosis</div>
 <div class="hero-subtitle">
-    A CV–LLM multimodal workflow for reconstructing physical flood impact
-    <b>I</b>, response and demand visibility <b>R</b>, and their spatial
-    divergence through the share-based <b>SMI</b> and the directional
-    standardised residual <b>SR</b>.
+    A thesis-aligned diagnostic prototype comparing physical impact
+    <b>I</b> with digitally mediated response and demand visibility <b>R</b>
+    through a share-based <b>SMI</b> and a directional standardised residual
+    <b>SR</b>.
 </div>
     """,
     unsafe_allow_html=True,
@@ -1021,38 +1021,54 @@ st.markdown(
 st.markdown(
     """
 <div class="research-note">
-    <b>Interpretation boundary.</b>
-    R is a digitally mediated visibility surface reconstructed from geocoded
-    social and textual signals. It is not a direct measurement of operational
-    resource deployment. The executable grid values are thesis-aligned
-    demonstration data.
+    <b>Empirical study represented by this interface.</b>
+    The thesis analyses the May 2023 Emilia–Romagna flood by aligning
+    physical impact <b>I</b> and digitally mediated response/demand
+    visibility <b>R</b> on a regular 1 km grid. The empirical analysis
+    identifies a moderate but spatially differentiated mismatch:
+    visibility is concentrated in urban centres, while several rural and
+    low-lying agricultural areas combine high physical impact with limited
+    visibility.
 </div>
     """,
     unsafe_allow_html=True,
 )
 
-
-# ============================================================
-# Summary metrics
-# ============================================================
-
-if "standardised_residual" in result.columns:
-    residual = pd.to_numeric(
-        result["standardised_residual"],
-        errors="coerce",
-    )
-    under_count = int((residual > 0.25).sum())
-    over_count = int((residual < -0.25).sum())
-else:
-    under_count = 0
-    over_count = 0
-
 m1, m2, m3, m4 = st.columns(4)
-m1.metric("Share-based SMI", "{:.3f}".format(summary.smi))
-m2.metric("Common-grid units", summary.n_units)
-m3.metric("Under-visibility units", under_count)
-m4.metric("Over-visibility units", over_count)
 
+m1.metric(
+    "Case study",
+    "Emilia–Romagna",
+)
+
+m2.metric(
+    "Primary spatial unit",
+    "1 km grid",
+)
+
+m3.metric(
+    "Usable locations",
+    "481",
+)
+
+m4.metric(
+    "Analytical posts",
+    "100",
+)
+
+st.caption(
+    "Dataset accounting: 450 unique X post IDs; 106 event-window records; "
+    "100 deduplicated analytical observations. Ravenna (81) and Faenza (23) "
+    "dominate the event-window records, while Conselice and Sant’Agata sul "
+    "Santerno appear once each."
+)
+
+st.caption(
+    "Interactive-demo boundary: the calculations, maps and downloadable "
+    "results below use 12 synthetic demonstration units. Any SMI calculated "
+    "by this app is a result of that input table and is not the original "
+    "empirical thesis SMI."
+)
 
 # ============================================================
 # Tabs
@@ -1092,34 +1108,31 @@ with tabs[0]:
     show_formula_row(
         [
             {
-                "label": "Physical impact I",
-                "formula": (
-                    r"I_i = w_1F_i + w_2B_i + w_3D_i"
-                ),
+                "label": "Raw physical impact I",
+                "formula": r"I_i = w_1F_i + w_2B_i + w_3D_i",
                 "note": (
                     "F = inundation ratio; B = inundated-building ratio; "
-                    "D = road-disruption ratio."
+                    "D = road-disruption ratio. Equal weights are the "
+                    "transparent public baseline, not calibrated constants."
                 ),
             },
             {
-                "label": "Response visibility R",
-                "formula": (
-                    r"R_i = z\!\left[\log(1+c_i)\right]"
-                ),
+                "label": "Raw response/demand visibility R",
+                "formula": r"R_i = c_i",
                 "note": (
-                    "c is the grid count of semantically filtered and "
-                    "geocoded response/demand signals."
+                    "c is the non-negative count/intensity of semantically "
+                    "filtered and geocoded signals in spatial unit i."
                 ),
             },
             {
-                "label": "Spatial mismatch",
+                "label": "Share-based spatial mismatch",
                 "formula": (
                     r"SMI=\frac{1}{2}\sum_i"
                     r"\left|\widetilde{R}_i-\widetilde{I}_i\right|"
                 ),
                 "note": (
-                    "SMI summarises distributional divergence; SR maps "
-                    "the direction of local divergence."
+                    "The shares are formed from raw non-negative I and R. "
+                    "The log-z transformation is used separately for SR."
                 ),
             },
         ]
@@ -1154,7 +1167,7 @@ with tabs[1]:
             result,
             value_column="impact_intensity_raw",
             size_column="impact_intensity_raw",
-            title="Physical impact intensity I",
+            title="Synthetic demonstration: physical impact intensity I",
             colour_scale="Blues",
         )
 
@@ -1219,30 +1232,27 @@ with tabs[2]:
     show_formula_row(
         [
             {
-                "label": "Signal construction",
-                "formula": r"R_i=z\!\left[\log(1+c_i)\right]",
+                "label": "Raw visibility intensity",
+                "formula": r"R_i=c_i",
                 "note": (
-                    "The log transform reduces domination by urban nodes; "
-                    "z-standardisation supports comparison with I."
+                    "This non-negative raw intensity forms the visibility "
+                    "share used by the SMI."
                 ),
             },
             {
-                "label": "Per-capita lens",
-                "formula": (
-                    r"R^{rate}_i="
-                    r"\frac{10{,}000\,c_i}{population_i}"
-                ),
+                "label": "Standardised visibility for SR",
+                "formula": r"R_i^{(z)}=z\!\left[\log(1+R_i)\right]",
                 "note": (
-                    "Used as an equity lens to reduce the mechanical effect "
-                    "of settlement size."
+                    "Log transformation and z-standardisation are used only "
+                    "for the directional residual, not for spatial shares."
                 ),
             },
             {
                 "label": "Evidence boundary",
                 "formula": r"R_i \neq operational\ deployment_i",
                 "note": (
-                    "Low visibility may indicate under-reporting, weak "
-                    "connectivity, or limited platform participation."
+                    "Low visibility can reflect reporting and connectivity "
+                    "constraints and requires independent triangulation."
                 ),
             },
         ]
@@ -1263,7 +1273,7 @@ with tabs[2]:
                 if "response_visibility_raw" in result.columns
                 else response_value
             ),
-            title="Digitally mediated response visibility R",
+            title="Synthetic demonstration: response/demand visibility R",
             colour_scale="Purples",
         )
 
@@ -1320,35 +1330,47 @@ with tabs[3]:
             {
                 "label": "Share residual",
                 "formula": (
-                    r"\Delta_i=\widetilde{R}_i-\widetilde{I}_i"
+                    r"\widetilde I_i=\frac{I_i}{\sum_j I_j},\quad "
+                    r"\widetilde R_i=\frac{R_i}{\sum_j R_j},\quad "
+                    r"\Delta_i=\widetilde R_i-\widetilde I_i"
                 ),
                 "note": (
-                    "The sign describes whether visibility share is above "
-                    "or below impact share."
+                    "Negative Delta means lower visibility share than impact "
+                    "share; positive Delta means the reverse."
                 ),
             },
             {
-                "label": "Global mismatch",
-                "formula": (
-                    r"SMI=\frac{1}{2}\sum_i|\Delta_i|"
-                ),
+                "label": "Overall distributional mismatch",
+                "formula": r"SMI=\frac{1}{2}\sum_i|\Delta_i|",
                 "note": (
-                    "SMI ranges from 0 to 1 and summarises distributional "
-                    "misalignment across the full grid."
+                    "SMI is calculated from the current dataset and lies in "
+                    "[0, 1]. It is not a universal or fixed case value."
                 ),
             },
             {
-                "label": "Directional surface",
+                "label": "Directional residual and magnitude",
                 "formula": (
-                    r"SR_i=z(I_i)-z(R_i)"
+                    r"SR_i=z[\log(1+I_i)]-z[\log(1+R_i)]"
                 ),
                 "note": (
-                    "Positive SR = impact exceeds visibility; negative SR = "
-                    "visibility exceeds impact."
+                    "Positive SR indicates under-visibility; negative SR "
+                    "indicates over-visibility. Mismatch magnitude is the "
+                    "min-max-rescaled |SR| surface."
                 ),
             },
         ]
     )
+
+    with st.expander(
+        "Synthetic demonstration run (not empirical thesis result)",
+        expanded=False,
+    ):
+        st.write(
+            "Executing the currently loaded {}-unit synthetic table produces "
+            "SMI = {:.3f}. This number is calculated from the present sample; "
+            "it is not fixed and not the empirical thesis result."
+            .format(summary.n_units, summary.smi)
+        )
 
     if "standardised_residual" in result.columns:
         show_map(
@@ -1359,7 +1381,7 @@ with tabs[3]:
                 if "mismatch_magnitude" in result.columns
                 else None
             ),
-            title="Directional standardised residual SR",
+            title="Synthetic demonstration: directional standardised residual SR",
             colour_scale="RdBu_r",
         )
 
@@ -1370,6 +1392,9 @@ with tabs[3]:
             "municipality",
             "impact_share",
             "visibility_share",
+            "delta_share",
+            "impact_log_z",
+            "visibility_log_z",
             "standardised_residual",
             "mismatch_magnitude",
             "diagnostic_direction",
@@ -1423,31 +1448,33 @@ with tabs[4]:
         """
     )
 
+    st.info(
+        "The thesis does not define a validated numerical rule that assigns "
+        "a planning action to each grid cell. The four proposal families "
+        "shown above are qualitative interpretation pathways, not automated "
+        "prescriptions."
+    )
+
     planning_columns = [
         column
         for column in [
+            "grid_id",
             "municipality",
             "diagnostic_direction",
             "mismatch_magnitude",
-            "planning_action",
+            "road_disruption_ratio",
         ]
         if column in result.columns
     ]
 
     if planning_columns:
         with st.expander(
-            "View planning actions generated for each grid unit",
+            "View diagnostic attributes for qualitative planning review",
             expanded=False,
         ):
-            sort_column = (
-                "mismatch_magnitude"
-                if "mismatch_magnitude" in planning_columns
-                else planning_columns[0]
-            )
-
             st.dataframe(
                 result[planning_columns].sort_values(
-                    sort_column,
+                    "mismatch_magnitude",
                     ascending=False,
                 ),
                 width="stretch",
@@ -1489,7 +1516,7 @@ with tabs[5]:
             {
                 "Component": "Mismatch",
                 "Sources": "Consistent municipality or 1 km grid",
-                "Role": "Shares, residual Δ, SMI, SR and |SR|",
+                "Role": "Raw shares for SMI; log-z fields for SR; min-max |SR| magnitude",
             },
             {
                 "Component": "Planning",
@@ -1537,7 +1564,7 @@ with tabs[5]:
         ```bash
         python scripts/run_pipeline.py
         pytest -q
-        streamlit run app_v4.py
+        streamlit run app.py
         ```
         """
     )
@@ -1552,6 +1579,6 @@ with tabs[5]:
 st.divider()
 
 st.caption(
-    "GeoAI Flood Response–Impact Mismatch Diagnosis · "
-    "CV–LLM multimodal workflow · Emilia-Romagna 2023"
+    "Flood Impact–Visibility Mismatch Diagnosis · "
+    "thesis-aligned synthetic diagnostic prototype · Emilia-Romagna research context"
 )
