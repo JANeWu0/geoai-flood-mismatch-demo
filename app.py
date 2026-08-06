@@ -1048,7 +1048,7 @@ else:
     over_count = 0
 
 m1, m2, m3, m4 = st.columns(4)
-m1.metric("Share-based SMI", "{:.3f}".format(summary.smi))
+m1.metric("Synthetic Demo SMI", "{:.3f}".format(summary.smi))
 m2.metric("Common-grid units", summary.n_units)
 m3.metric("Under-visibility units", under_count)
 m4.metric("Over-visibility units", over_count)
