@@ -15,6 +15,13 @@ A Multimodal Vision–Language Framework for Dynamic Impact–Response Coordinat
 
 [Open the interactive Streamlit app](https://geoai-flood-mismatch-demo-mt2cs2m7ruoewdch4koyc3.streamlit.app/)
 
+> **Data and evidence statement.** This repository brings together three
+> distinct components: empirical maps and reported event-window counts from
+> the master's thesis, a post-thesis 1 km QGIS scale comparison, and a separate
+> 12-unit synthetic table used only to make the diagnostic formulas executable.
+> The synthetic table is not the source of the thesis maps, reported counts or
+> empirical interpretation.
+
 ## Empirical study represented by this repository
 
 This repository accompanies the empirical analysis of the **May 2023
@@ -117,7 +124,9 @@ context in the 1 km panels can also make them appear darker when reduced.
 
 ## Executable demonstration boundary
 
-The public Streamlit application executes the thesis formulas using a
+The maps and event-window counts documented above are empirical thesis or
+post-thesis cartographic outputs. The public Streamlit application is a
+separate executable method demonstration that applies the thesis formulas to a
 **12-unit synthetic demonstration table**.
 
 Therefore:
