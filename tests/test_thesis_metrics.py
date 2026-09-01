@@ -104,3 +104,28 @@ def test_homepage_does_not_present_demo_smi_as_empirical_result():
     assert 'm1.metric("Demo SMI"' not in app_text
     assert "Synthetic demonstration run" in app_text
     assert "not the empirical thesis result" in app_text
+
+
+def test_dual_scale_map_assets_are_present_and_paired():
+    filenames = {
+        "data_coverage.png",
+        "impact_intensity.png",
+        "response_visibility.png",
+        "smi_magnitude.png",
+        "signed_mismatch.png",
+    }
+
+    for resolution in ["5km", "1km"]:
+        map_dir = ROOT / "assets" / "maps" / resolution
+        assert {path.name for path in map_dir.glob("*.png")} == filenames
+
+        for filename in filenames:
+            assert (map_dir / filename).stat().st_size > 100_000
+
+
+def test_interface_distinguishes_thesis_and_refinement_scales():
+    app_text = (ROOT / "app.py").read_text(encoding="utf-8")
+    assert 'm2.metric("Original thesis unit", "5 km grid")' in app_text
+    assert 'm3.metric("Post-thesis refinement", "1 km grid")' in app_text
+    assert "not a replacement for " in app_text
+    assert "the thesis result." in app_text

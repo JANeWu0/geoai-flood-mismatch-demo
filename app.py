@@ -14,6 +14,10 @@ import streamlit.components.v1 as components
 
 ROOT = Path(__file__).resolve().parent
 SRC = ROOT / "src"
+ASSETS = ROOT / "assets"
+FRAMEWORK_ASSETS = ASSETS / "frameworks"
+MAP_5KM_ASSETS = ASSETS / "maps" / "5km"
+MAP_1KM_ASSETS = ASSETS / "maps" / "1km"
 
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
@@ -281,6 +285,35 @@ def show_map(
         unsafe_allow_html=True,
     )
 
+
+def show_scale_pair(
+    title: str,
+    map_filename: str,
+    explanation: str,
+) -> None:
+    """Show the preserved 5 km thesis map beside the 1 km refinement."""
+
+    st.markdown("### {}".format(title))
+    left, right = st.columns(2, gap="large")
+
+    with left:
+        st.image(
+            MAP_5KM_ASSETS / map_filename,
+            caption="Original master's-thesis map (5 km)",
+            width="stretch",
+        )
+
+    with right:
+        st.image(
+            MAP_1KM_ASSETS / map_filename,
+            caption="Post-thesis QGIS refinement (1 km)",
+            width="stretch",
+        )
+
+    st.caption(explanation)
+    st.divider()
+
+
 def download_result_button() -> None:
     csv_bytes = result.to_csv(index=False).encode("utf-8")
 
@@ -464,7 +497,7 @@ def integrated_workflow_svg() -> str:
 
     <text x="860" y="145" class="title" text-anchor="middle">Impact surface</text>
     <text x="860" y="190" class="equation" text-anchor="middle">Iᵢ</text>
-    <text x="860" y="224" class="small" text-anchor="middle">1 km grid</text>
+    <text x="860" y="224" class="small" text-anchor="middle">5 km / 1 km support</text>
     <text x="860" y="244" class="small" text-anchor="middle">impact intensity</text>
     <text x="860" y="264" class="small" text-anchor="middle">hazard + exposure</text>
 
@@ -693,7 +726,7 @@ def impact_workflow_svg() -> str:
     <text x="52" y="145" class="l">Copernicus EMS flood extent</text>
     <text x="52" y="180" class="l">OSM building footprints</text>
     <text x="52" y="215" class="l">Inundated road segments</text>
-    <text x="52" y="250" class="l">1 km grid / municipalities</text>
+    <text x="52" y="250" class="l">5 km thesis / 1 km check</text>
 
     <path d="M305 168 L372 168"
           stroke="#475569"
@@ -1024,11 +1057,11 @@ st.markdown(
     <b>Empirical study represented by this interface.</b>
     The thesis analyses the May 2023 Emilia–Romagna flood by aligning
     physical impact <b>I</b> and digitally mediated response/demand
-    visibility <b>R</b> on a regular 1 km grid. The empirical analysis
-    identifies a moderate but spatially differentiated mismatch:
-    visibility is concentrated in urban centres, while several rural and
-    low-lying agricultural areas combine high physical impact with limited
-    visibility.
+    visibility <b>R</b> on a regular <b>5 km grid</b>. This repository now
+    preserves those original thesis maps and places a post-thesis
+    <b>1 km QGIS refinement</b> beside them. The finer maps apply the same
+    diagnostic definitions as a scale-sensitivity comparison; they do not
+    retrospectively replace the thesis analysis.
 </div>
     """,
     unsafe_allow_html=True,
@@ -1041,15 +1074,9 @@ m1.metric(
     "Emilia–Romagna",
 )
 
-m2.metric(
-    "Primary spatial unit",
-    "1 km grid",
-)
+m2.metric("Original thesis unit", "5 km grid")
 
-m3.metric(
-    "Usable locations",
-    "481",
-)
+m3.metric("Post-thesis refinement", "1 km grid")
 
 m4.metric(
     "Analytical posts",
@@ -1057,7 +1084,8 @@ m4.metric(
 )
 
 st.caption(
-    "Dataset accounting: 450 unique X post IDs; 106 event-window records; "
+    "Dataset accounting: 481 usable location assignments; 450 unique X "
+    "post IDs; 106 event-window records; "
     "100 deduplicated analytical observations. Ravenna (81) and Faenza (23) "
     "dominate the event-window records, while Conselice and Sant’Agata sul "
     "Santerno appear once each."
@@ -1080,6 +1108,7 @@ tabs = st.tabs(
         "Physical Impact I",
         "Response Visibility R",
         "SMI and SR",
+        "5 km vs 1 km Maps",
         "Planning Interpretation",
         "Data and Provenance",
     ]
@@ -1138,6 +1167,29 @@ with tabs[0]:
         ]
     )
 
+    st.markdown("### Original thesis framework figures")
+    st.caption(
+        "These two source figures are the same framework panels retained "
+        "in the doctoral writing sample. They are displayed without "
+        "redrawing or recolouring."
+    )
+
+    framework_left, framework_right = st.columns(2, gap="large")
+
+    with framework_left:
+        st.image(
+            FRAMEWORK_ASSETS / "research_structure.png",
+            caption="Overall research structure and analytical workflow",
+            width="stretch",
+        )
+
+    with framework_right:
+        st.image(
+            FRAMEWORK_ASSETS / "methodology_framework.png",
+            caption="CV–LLM mismatch-diagnosis methodology",
+            width="stretch",
+        )
+
 
 # ============================================================
 # Physical impact I
@@ -1156,8 +1208,9 @@ with tabs[1]:
         """
         The impact layer combines the authoritative Copernicus EMS event
         footprint with OSM building and transport features. Three ratios
-        are computed for each municipality or 1 km grid unit: inundation,
-        inundated buildings, and road disruption. Their weighted
+        are computed on a common grid: the thesis maps use 5 km cells and
+        the post-thesis refinement uses 1 km cells. The indicators are
+        inundation, inundated buildings, and road disruption. Their weighted
         combination forms the physical impact intensity **I**.
         """
     )
@@ -1424,10 +1477,89 @@ with tabs[3]:
 
 
 # ============================================================
-# Planning
+# Original 5 km and refined 1 km maps
 # ============================================================
 
 with tabs[4]:
+    st.subheader("Original 5 km analysis and post-thesis 1 km refinement")
+
+    st.markdown(
+        """
+        The left-hand panels are the preserved **5 km maps from the
+        master's-thesis analysis**. The right-hand panels are the **1 km
+        maps exported from the refreshed QGIS workflow** used for the
+        doctoral writing-sample scale comparison. Both resolutions follow
+        the same conceptual sequence—impact **I**, visibility **R**,
+        distributional mismatch and signed residual—but changing the grid
+        also changes aggregation, zero counts, standardisation and class
+        breaks.
+        """
+    )
+
+    st.info(
+        "Compare spatial structure and residual direction, not overall "
+        "darkness or equal-looking colour shades. The 1 km panels retain "
+        "denser OpenStreetMap, building, road, river and boundary context "
+        "and are a sensitivity/refinement check, not a replacement for "
+        "the thesis result."
+    )
+
+    show_scale_pair(
+        "Data coverage and signal presence",
+        "data_coverage.png",
+        (
+            "The finer support makes source availability more spatially "
+            "selective. Empty cells remain evidence of missing or unobserved "
+            "signals, not verified absence of impact or need."
+        ),
+    )
+
+    show_scale_pair(
+        "Physical impact intensity I",
+        "impact_intensity.png",
+        (
+            "The broad affected field remains visible at both scales. The "
+            "1 km map resolves narrower corridors and within-cell variation "
+            "that the 5 km aggregation smooths."
+        ),
+    )
+
+    show_scale_pair(
+        "Response and demand visibility R",
+        "response_visibility.png",
+        (
+            "The finer grid localises observed communication nodes but also "
+            "creates more zero-count cells. Neither map represents deployed "
+            "personnel or resources."
+        ),
+    )
+
+    show_scale_pair(
+        "Grid-based mismatch magnitude",
+        "smi_magnitude.png",
+        (
+            "This non-negative cartographic layer identifies where mismatch "
+            "is concentrated. It must be distinguished from the single "
+            "global SMI value and from the signed residual below."
+        ),
+    )
+
+    show_scale_pair(
+        "Signed standardised residual SR",
+        "signed_mismatch.png",
+        (
+            "Blue indicates impact high relative to visibility; pink "
+            "indicates visibility high relative to impact. Exact cell "
+            "agreement is not expected after the change in spatial support."
+        ),
+    )
+
+
+# ============================================================
+# Planning
+# ============================================================
+
+with tabs[5]:
     st.subheader("From diagnosis to planning intervention")
 
     components.html(
@@ -1486,7 +1618,7 @@ with tabs[4]:
 # Provenance
 # ============================================================
 
-with tabs[5]:
+with tabs[6]:
     st.subheader("Data sources, evidence boundary, and reproducibility")
 
     source_table = pd.DataFrame(
@@ -1515,7 +1647,7 @@ with tabs[5]:
             },
             {
                 "Component": "Mismatch",
-                "Sources": "Consistent municipality or 1 km grid",
+                "Sources": "Consistent 5 km thesis grid or 1 km refinement grid",
                 "Role": "Raw shares for SMI; log-z fields for SR; min-max |SR| magnitude",
             },
             {

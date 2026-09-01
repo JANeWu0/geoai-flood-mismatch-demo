@@ -22,4 +22,9 @@ It is not a direct count of deployed teams, vehicles, funding, or completed resc
 
 ## Spatial unit
 
-The thesis case analysis uses a common 1 km grid so that impact and visibility surfaces can be fused directly. The included sample is a small tabular representation of such grid units.
+The submitted master's-thesis maps use a common 5 km grid so that impact and
+visibility surfaces can be compared directly. The repository preserves that
+record and adds a separately labelled 1 km QGIS refinement as a post-thesis
+scale-sensitivity check. The included 12-unit sample is a synthetic tabular
+demonstration of common-grid logic; it is not the empirical attribute table for
+either map resolution.

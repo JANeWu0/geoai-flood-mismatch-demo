@@ -1,5 +1,20 @@
 # GitHub release notes
 
+## Dual-scale writing-sample alignment
+
+- corrects the spatial-unit description: the submitted master's-thesis maps
+  use a 5 km grid;
+- preserves the original 5 km coverage, impact, visibility, mismatch-magnitude
+  and signed-residual figures;
+- adds the post-thesis 1 km QGIS refinement as a separate scale-sensitivity
+  comparison;
+- adds both original framework figures retained in the doctoral writing sample;
+- adds a dedicated Streamlit comparison tab and paired README figures;
+- explains that grid changes affect aggregation, zero counts,
+  standardisation, class breaks and cartographic darkness;
+- keeps the synthetic 12-unit executable demo separate from the empirical
+  static map outputs.
+
 ## Scientific-alignment revision
 
 This version corrects the executable repository so its formulas, terminology and

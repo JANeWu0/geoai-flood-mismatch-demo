@@ -20,8 +20,11 @@ A Multimodal Vision–Language Framework for Dynamic Impact–Response Coordinat
 This repository accompanies the empirical analysis of the **May 2023
 Emilia–Romagna flood**. The thesis aligns physically reconstructed flood
 impact `I` and digitally mediated response/demand visibility `R` on consistent
-spatial units, with a regular **1 km grid** used for the principal diagnostic
-analysis.
+spatial units. The submitted master's-thesis maps use a regular **5 km grid**.
+This repository preserves those original figures and adds a clearly labelled
+**1 km post-thesis QGIS refinement** as a scale-sensitivity comparison. The
+refinement follows the same diagnostic definitions but does not retrospectively
+replace or rewrite the thesis analysis.
 
 ### Empirical data basis
 
@@ -57,6 +60,61 @@ Response/demand visibility `R` is a mediated information signal and must be
 interpreted together with accessibility conditions, official records and
 post-flood intervention evidence.
 
+## Original frameworks retained in the writing sample
+
+| Overall research structure | CV–LLM methodological framework |
+|---|---|
+| ![Overall research structure](assets/frameworks/research_structure.png) | ![CV–LLM methodology](assets/frameworks/methodology_framework.png) |
+
+These are the original framework panels retained in the doctoral writing
+sample. They are displayed here without redrawing or recolouring.
+
+## Original 5 km maps and 1 km QGIS refinement
+
+The left column preserves the master's-thesis map. The right column shows the
+post-thesis 1 km refinement used for the scale comparison in the writing
+sample. Changing grid support changes aggregation, zero counts,
+standardisation and class breaks. Compare spatial structure and residual
+direction rather than equal-looking colour shades or overall darkness.
+
+### Data coverage and signal presence
+
+| Original master's-thesis map (5 km) | Post-thesis QGIS refinement (1 km) |
+|---|---|
+| ![5 km coverage](assets/maps/5km/data_coverage.png) | ![1 km coverage](assets/maps/1km/data_coverage.png) |
+
+### Physical impact intensity I
+
+| Original master's-thesis map (5 km) | Post-thesis QGIS refinement (1 km) |
+|---|---|
+| ![5 km impact](assets/maps/5km/impact_intensity.png) | ![1 km impact](assets/maps/1km/impact_intensity.png) |
+
+### Response and demand visibility R
+
+| Original master's-thesis map (5 km) | Post-thesis QGIS refinement (1 km) |
+|---|---|
+| ![5 km response visibility](assets/maps/5km/response_visibility.png) | ![1 km response visibility](assets/maps/1km/response_visibility.png) |
+
+### Grid-based mismatch magnitude
+
+| Original master's-thesis map (5 km) | Post-thesis QGIS refinement (1 km) |
+|---|---|
+| ![5 km mismatch magnitude](assets/maps/5km/smi_magnitude.png) | ![1 km mismatch magnitude](assets/maps/1km/smi_magnitude.png) |
+
+This non-negative layer identifies where mismatch magnitude is concentrated.
+It is distinct from both the single global SMI value and the signed residual.
+
+### Signed standardised residual SR
+
+| Original master's-thesis map (5 km) | Post-thesis QGIS refinement (1 km) |
+|---|---|
+| ![5 km signed residual](assets/maps/5km/signed_mismatch.png) | ![1 km signed residual](assets/maps/1km/signed_mismatch.png) |
+
+Blue indicates impact high relative to visibility; pink indicates visibility
+high relative to impact. Exact cell agreement is not expected after the change
+in spatial support. The denser OpenStreetMap, building, road, river and boundary
+context in the 1 km panels can also make them appear darker when reduced.
+
 ## Executable demonstration boundary
 
 The public Streamlit application executes the thesis formulas using a
@@ -73,9 +131,9 @@ Therefore:
   direct proof of response failure.
 
 The repository demonstrates the analytical and computational logic of the
-thesis. It does not reproduce the complete original raster archive, empirical
-1 km polygon dataset, GIS project, X archive, geocoding workflow or
-institutional deployment records.
+thesis and publishes the paired cartographic outputs. It does not reproduce the
+complete original raster archive, empirical 5 km or 1 km attribute tables, GIS
+project, X archive, geocoding workflow or institutional deployment records.
 
 ## 1. Research problem
 
@@ -92,7 +150,8 @@ The key distinction is:
 
 The workflow follows four stages:
 
-1. reconstruct physical impact on common spatial units;
+1. reconstruct physical impact on common spatial units (5 km in the thesis,
+   with a 1 km post-thesis refinement);
 2. extract, geocode and aggregate response/demand signals;
 3. quantify distributional mismatch with the Spatial Mismatch Index;
 4. interpret direction and magnitude through the standardised residual surface.

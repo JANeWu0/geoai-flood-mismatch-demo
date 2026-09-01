@@ -20,7 +20,9 @@ The code is organised around the same analytical sequence used in the thesis:
 The following definitions and data-accounting statements are taken from the submitted thesis:
 
 - the case is the May 2023 Emilia-Romagna flood;
-- the main analytical unit is a regular 1 km grid;
+- the submitted master's-thesis maps use a regular 5 km grid;
+- a post-thesis 1 km QGIS refinement is reported separately as a
+  scale-sensitivity comparison;
 - physical impact is represented by inundation ratio, inundated-building ratio and road-disruption ratio;
 - response visibility is a digitally mediated signal and is not equivalent to operational deployment;
 - 481 records had usable location assignments, representing 450 unique X post IDs;
@@ -38,7 +40,8 @@ The PDF does not contain the complete raw research package. In particular, it do
 - the original X-post archive;
 - API credentials or scraping logs;
 - the complete Copernicus, OSM, population and intervention layers;
-- the exact 1 km grid attribute table used to draw every map;
+- the exact 5 km thesis and 1 km refinement attribute tables used to draw
+  every map;
 - the original LLM run log and manually reviewed annotation sample;
 - all original Python and GIS project files.
 
@@ -47,6 +50,20 @@ The PDF does not contain the complete raw research package. In particular, it do
 `data/sample_grid_units.csv` and `data/sample_llm_annotations.csv` are synthetic examples. Their purpose is to make the thesis logic executable and reviewable without presenting invented values as empirical results.
 
 The files beginning with `thesis_` contain only source-accounting values explicitly stated in the thesis.
+
+## Published cartographic outputs
+
+The repository contains two clearly separated map directories:
+
+- `assets/maps/5km/`: preserved master's-thesis figures;
+- `assets/maps/1km/`: post-thesis QGIS refinements used in the doctoral
+  writing-sample scale comparison.
+
+The paired files cover data coverage, physical impact, response visibility,
+grid-based mismatch magnitude and the signed residual. The static figures are
+empirical/cartographic outputs; the executable 12-unit table remains a
+synthetic method demonstration and must not be presented as the source of
+those figures.
 
 ## Validation scope
 

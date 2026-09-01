@@ -11,9 +11,14 @@ Validation in this repository covers the executable diagnostic prototype:
 - sign-based directional interpretation without an empirical `±0.25` cut-off;
 - the thesis-core LLM annotation fields;
 - explicit separation between visibility and operational deployment.
+- explicit separation between the original 5 km thesis figures and the
+  post-thesis 1 km refinement figures.
 
 It does **not** independently validate the original empirical thesis maps or
 reconstruct the complete original CV, GIS, API and geocoding pipeline.
+
+Static map files are checked for paired filenames and non-zero image content,
+but repository tests do not independently recompute the empirical map values.
 
 ## Pipeline
 
@@ -44,7 +49,7 @@ pytest -q
 Expected result for this revision:
 
 ```text
-7 passed
+9 passed
 ```
 
 The tests independently reconstruct the SMI and SR formulas from the input

@@ -93,7 +93,16 @@ The number remains available only in clearly labelled technical contexts:
 
 Each location explicitly states that it is not the empirical thesis result.
 
-## 7. LLM schema
+## 7. Spatial-scale boundary
+
+The submitted master's-thesis maps use a 5 km grid. The repository preserves
+those images in `assets/maps/5km/` and displays a separately labelled 1 km
+post-thesis QGIS refinement from `assets/maps/1km/`. The two sets share
+diagnostic definitions but are not described as cell-for-cell equivalents.
+The interface and README instruct readers to compare spatial structure and
+residual direction rather than colour darkness.
+
+## 8. LLM schema
 
 Thesis-core fields:
 
@@ -107,14 +116,14 @@ The public prompt includes these fields. Optional confidence, geocoding cue and
 rationale fields are labelled repository audit additions rather than a verbatim
 copy of the thesis prompt.
 
-## 8. Planning interpretation
+## 9. Planning interpretation
 
 The thesis provides four qualitative proposal groups. It does not define a
 validated numerical mapping from grid values to automatic prescriptions. The
 corrected pipeline therefore removes threshold-generated planning actions and
 presents the proposal groups as qualitative interpretation pathways.
 
-## 9. Public implementation boundary
+## 10. Public implementation boundary
 
 The thesis develops a CV–LLM multimodal framework. The public repository begins
 from prepared unit-level physical-impact ratios and synthetic visibility counts.
